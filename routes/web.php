@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\EventsController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\EventController as EventAdminController;
+use App\Http\Controllers\Admin\PartnerController;
 
 // Rute User Area
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -32,4 +33,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('events', EventAdminController::class);
+    Route::get('/partners',              [PartnerController::class, 'index'])->name('partners.index');
+    Route::get('/partners/create',       [PartnerController::class, 'create'])->name('partners.create');
+    Route::post('/partners',             [PartnerController::class, 'store'])->name('partners.store');
+    Route::get('/partners/{partner}/edit', [PartnerController::class, 'edit'])->name('partners.edit');
+    Route::put('/partners/{partner}',    [PartnerController::class, 'update'])->name('partners.update');
+    Route::delete('/partners/{partner}', [PartnerController::class, 'destroy'])->name('partners.destroy');
+
     });

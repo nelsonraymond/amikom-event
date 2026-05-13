@@ -114,5 +114,11 @@ public function run(): void
                 'stock' => 100,
                 'poster_path' => 'posters/event-6.png',
                 ]);
+
+               
+    $this->call([
+        PartnerSeeder::class,
+    ]);
+
     }
 }
