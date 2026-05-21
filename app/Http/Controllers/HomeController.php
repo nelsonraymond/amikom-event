@@ -1,35 +1,65 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\Models\Event;
 use App\Models\Category;
+use App\Models\Event;
+use App\Models\Partner;
 use Illuminate\Http\Request;
-
 
 class HomeController extends Controller
 {
-public function index(Request $request)
-{
-// 1. Ambil semua jenis kategori untuk tampilan filter tab button
-$categories = Category::all();
+    public function index(Request $request)
+    {
+        $categories = Category::orderBy('name')->get();
 
-// 2. Buat kueri dasar untuk mengambil event:
-// - Gunakan Eager loading `category`
-// - Hanya tampilkan kegiatan dengan jadwal yang belum kedaluwarsa (&gt;= hari ini)
-$query = Event::with('category')
-->where('date','>=', now())
-->orderBy('date','asc');
+        $partners = Partner::orderBy('name')->get();
 
-if ($request->has('category') && $request->category != '') {
-    // Saring berdasarkan relasi tabel rujukan melalui properti slug kategori.
-    $query->whereHas('category', function ($q) use ($request) {
-        $q->where('slug', $request->category);
-    });
-}
+        $query = Event::with('category')
+            ->where('date', '>=', now())
+            ->orderBy('date', 'asc');
 
-// 4. Eksekusi query dan kirim data hasilnya ke template Blade
-$events = $query->get();
+        if ($request->filled('category')) {
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('slug', $request->category);
+            });
+        }
 
-return view('welcome', compact('events', 'categories'));
-}
+        $events = $query->get();
+
+        return view('welcome', compact('events', 'categories', 'partners'));
+    }
+    public function katalog(Request $request)
+    {
+        $categories = Category::orderBy('name')->get();
+ 
+        $query = Event::with('category')
+            ->where('date', '>=', now())
+            ->orderBy('date', 'asc');
+ 
+        if ($request->filled('category')) {
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('slug', $request->category);
+            });
+        }
+ 
+        $events = $query->get();
+ 
+        return view('katalog', compact('events', 'categories'));
+    }
+ 
+    public function profil()
+    {
+        return view('profil');
+    }
+ 
+    public function bantuan()
+    {
+        return view('bantuan');
+    }
+ 
+    public function contact()
+    {
+        return view('contact');
+    }
 }

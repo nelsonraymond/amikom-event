@@ -19,6 +19,7 @@ Route::get('/my-ticket', [TicketController::class, 'show'])->name('ticket');
 Route::get('/bantuan', [HomeController::class, 'bantuan'])->name('bantuan');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/profil', [HomeController::class, 'profil'])->name('profil');
+Route::get('/katalog', [HomeController::class, 'katalog'])->name('katalog');
 
 // Rute Admin Area
 
@@ -33,11 +34,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('events', EventAdminController::class);
-    Route::get('/partners',              [PartnerController::class, 'index'])->name('partners.index');
-    Route::get('/partners/create',       [PartnerController::class, 'create'])->name('partners.create');
-    Route::post('/partners',             [PartnerController::class, 'store'])->name('partners.store');
-    Route::get('/partners/{partner}/edit', [PartnerController::class, 'edit'])->name('partners.edit');
-    Route::put('/partners/{partner}',    [PartnerController::class, 'update'])->name('partners.update');
-    Route::delete('/partners/{partner}', [PartnerController::class, 'destroy'])->name('partners.destroy');
-
+    Route::resource('categories', CategoryController::class);
+    Route::resource('partners', PartnerController::class);
     });
