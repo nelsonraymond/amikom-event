@@ -24,8 +24,6 @@
 
 <body class="bg-slate-50 text-slate-900">
 
-
-
     <!-- Navigation (Simplified) -->
     <nav
         class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center bg-white border-b sticky top-8 z-40 rounded-b-2xl shadow-sm">
