@@ -8,9 +8,7 @@ diselenggarakan.')
 <div class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm
 max-w-3xl">
 
-<form action="{{ route('admin.events.store') }}" method="POST"
-
-enctype="multipart/form-data" class="space-y-6">
+<form action="{{ route('admin.events.store') }}" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mt-2">
 @csrf
 
 <div>
@@ -150,10 +148,7 @@ $message }}</span> @enderror
 
 tracking-wide">Poster Event (Opsional)</label>
 
-<input type="file" name="poster" accept="image/*" class="w-full px-5
-py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl focus:ring-4
-focus:ring-indigo-500/10 focus:border-indigo-600 outline-none transition
-font-medium">
+<input type="file" name="poster" accept="image/*" class="w-full border border-gray-300 p-2.5 rounded">
 
 @error('poster') <span class="text-red-500 text-sm mt-1">{{ $message
 
