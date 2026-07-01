@@ -15,6 +15,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
 
+        $middleware->validateCsrfTokens(except: [
+            'midtrans/callback', // Removed the leading slash '/'
+            'midtrans/*',        // Alternatively, use a wildcard to cover everything under midtrans
+        ]);
+    
         $middleware->redirectGuestsTo('/admin/login');
     })
     ->withExceptions(function (Exceptions $exceptions): void {

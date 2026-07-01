@@ -42,7 +42,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('transactions', [\App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('transactions.index');
     });
 });
-
+Route::post('/midtrans/callback', [\App\Http\Controllers\MidtransWebhookController::class, 'handle']);
 
 // Rute User Area
 Route::get('/', [HomeController::class, 'index'])->name('home');
