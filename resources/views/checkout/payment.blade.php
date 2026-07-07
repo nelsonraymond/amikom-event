@@ -9,10 +9,16 @@
                      d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
              </svg>
          </div>
-         <h2 class="text-2xl font-black mb-2">Selesaikan Pembayaran</h2>
-         <p class="text-slate-500 mb-8">Mohon selesaikan pembayaran tiket Anda untuk event <strong>{{ $transaction->event->title }}</strong>.</p>
-         
-         <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 mb-8">
+          <h2 class="text-2xl font-black mb-2">Selesaikan Pembayaran</h2>
+          <p class="text-slate-500 mb-6">Mohon selesaikan pembayaran tiket Anda untuk event <strong>{{ $transaction->event->title }}</strong>.</p>
+          
+          @if(session('error'))
+              <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-600 rounded-2xl text-sm font-semibold">
+                  {{ session('error') }}
+              </div>
+          @endif
+          
+          <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100 mb-8">
              <p class="text-sm text-slate-400 font-bold uppercase tracking-wider mb-1">Total Tagihan</p>
              <h3 class="text-4xl font-extrabold text-indigo-600">Rp {{ number_format($transaction->total_price, 0, ',', '.') }}</h3>
              <p class="text-xs text-slate-400 mt-2">Order ID: {{ $transaction->order_id }}</p>
@@ -33,14 +39,18 @@
              onSuccess: function(result){
                  window.location.href = "{{ route('checkout.success', $transaction->order_id) }}";
              },
-             // Optional
-             onPending: function(result){
-                 window.location.href = "{{ route('checkout.success', $transaction->order_id) }}";
-             },
-             // Optional
-             onError: function(result){
-                 alert("Pembayaran Gagal!");
-             }
+              // Optional
+              onPending: function(result){
+                  window.location.href = "{{ route('checkout.success', $transaction->order_id) }}";
+              },
+              // Optional
+              onError: function(result){
+                  alert("Pembayaran Gagal!");
+              },
+              // Optional
+              onClose: function(result){
+                  window.location.href = "{{ route('checkout.payment', $transaction->order_id) }}";
+              }
          });
      };
 

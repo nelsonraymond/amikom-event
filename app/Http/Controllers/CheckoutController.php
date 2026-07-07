@@ -20,10 +20,15 @@ class CheckoutController extends Controller
     public function payment($order_id)
     {
          // Mengambil daftar kategori untuk keperluan menu footer
-         $categories = \App\Models\Category::all();
+          $categories = \App\Models\Category::all();
 
-         $transaction = Transaction::with('event')->where('order_id', $order_id)->firstOrFail();
-         return view('checkout.payment', compact('transaction','categories'));
+          $transaction = Transaction::with('event')->where('order_id', $order_id)->firstOrFail();
+
+          if ($transaction->status === 'success' || $transaction->status === 'settlement') {
+              return redirect()->route('checkout.success', $order_id);
+          }
+
+          return view('checkout.payment', compact('transaction','categories'));
     }
 
     public function store(Request $request, Event $event)
@@ -110,6 +115,8 @@ class CheckoutController extends Controller
              // Hanya ubah status menjadi sukses jika Midtrans mengonfirmasi pembayaran lunas
              if (in_array($midtransStatus->transaction_status, ['capture', 'settlement'])) {
                  $transaction->update(['status' => 'success']);
+             } else {
+                 return redirect()->route('checkout.payment', $order_id)->with('error', 'Pembayaran belum diselesaikan.');
              }
          } catch (\Exception $e) {
              // Jika error (transaksi tidak ada di Midtrans, koneksi terputus), kembalikan ke beranda
