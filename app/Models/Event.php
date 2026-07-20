@@ -6,15 +6,30 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
     protected $fillable = [
-        'category_id','title', 'description', 'date','location', 'price','stock', 'poster_path'
+        'category_id', 'partner_id', 'title', 'description', 'date', 'location', 'price', 'stock', 'poster_path'
     ];
+
     protected $casts = [
         'date' => 'datetime'
-    ]  ;
-    
+    ];
 
-public function category()
-{
-return $this->belongsTo(Category::class);
-}
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function partner()
+    {
+        return $this->belongsTo(Partner::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function getAverageRatingAttribute()
+    {
+        return round($this->reviews()->avg('rating') ?? 0, 1);
+    }
 }

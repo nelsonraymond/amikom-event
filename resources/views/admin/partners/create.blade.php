@@ -85,7 +85,39 @@
                     <p class="text-red-500 text-xs font-medium mt-1.5">{{ $message }}</p>
                 @enderror
             </div>
+            {{-- Email --}}
+<div>
+    <label for="email" class="block text-sm font-semibold text-slate-700 mb-2">
+        Email <span class="text-red-500">*</span>
+    </label>
+    <input type="email"
+           id="email"
+           name="email"
+           value="{{ old('email') }}"
+           placeholder="partner@email.com"
+           class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium text-slate-800 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition @error('email') border-red-400 bg-red-50 @enderror"
+           required>
+    <p class="text-xs text-slate-400 mt-1.5">Email ini dipakai partner untuk login ke dashboard mereka.</p>
+    @error('email')
+        <p class="text-red-500 text-xs font-medium mt-1.5">{{ $message }}</p>
+    @enderror
+</div>
 
+{{-- Password --}}
+<div>
+    <label for="password" class="block text-sm font-semibold text-slate-700 mb-2">
+        Password <span class="text-red-500">*</span>
+    </label>
+    <input type="password"
+           id="password"
+           name="password"
+           placeholder="Minimal 8 karakter"
+           class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-medium text-slate-800 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition @error('password') border-red-400 bg-red-50 @enderror"
+           required>
+    @error('password')
+        <p class="text-red-500 text-xs font-medium mt-1.5">{{ $message }}</p>
+    @enderror
+</div>
             {{-- Preview Logo --}}
             <div>
                 <label class="block text-sm font-semibold text-slate-700 mb-2">Preview Logo</label>

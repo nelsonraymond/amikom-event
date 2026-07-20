@@ -23,10 +23,11 @@ class EventController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        $categories = Category::all();
-        return view('admin.events.create', compact('categories'));
-    }
+{
+    $categories = Category::all();
+    $partners = \App\Models\Partner::all();
+    return view('admin.events.create', compact('categories', 'partners'));
+}
 
     /**
      * Store a newly created resource in storage.
@@ -38,29 +39,28 @@ class EventController extends Controller
      * 4. Diperbaiki: pesan sukses ("diperbarui" → "ditambahkan")
      */
     public function store(Request $request)
-    {
-        $data = $request->validate([
-            'category_id' => 'required|exists:categories,id',
-            'title'       => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'date'        => 'required|date',
-            'location'    => 'required|string|max:255',
-            'price'       => 'required|numeric|min:0',
-            'stock'       => 'required|numeric|min:1',
-            'poster'      => 'nullable|image|max:2048',
-        ]);
+{
+    $data = $request->validate([
+        'category_id' => 'required|exists:categories,id',
+        'partner_id'  => 'nullable|exists:partners,id',
+        'title'       => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'date'        => 'required|date',
+        'location'    => 'required|string|max:255',
+        'price'       => 'required|numeric|min:0',
+        'stock'       => 'required|numeric|min:1',
+        'poster'      => 'nullable|image|max:2048',
+    ]);
 
-        // Simpan poster ke storage jika ada file yang diunggah
-        if ($request->hasFile('poster')) {
-            $data['poster_path'] = $request->file('poster')->store('posters', 'public');
-        }
-
-        Event::create($data);
-
-        return redirect()->route('admin.events.index')
-            ->with('success', 'Event berhasil ditambahkan.');
+    if ($request->hasFile('poster')) {
+        $data['poster_path'] = $request->file('poster')->store('posters', 'public');
     }
 
+    Event::create($data);
+
+    return redirect()->route('admin.events.index')
+        ->with('success', 'Event berhasil ditambahkan.');
+}
     /**
      * Display the specified resource.
      *
@@ -75,12 +75,12 @@ class EventController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Event $event)
-    {
-        $categories = Category::all();
-        return view('admin.events.edit', compact('event', 'categories'));
-    }
-
+   public function edit(Event $event)
+{
+    $categories = Category::all();
+    $partners = \App\Models\Partner::all();
+    return view('admin.events.edit', compact('event', 'categories', 'partners'));
+}
     /**
      * Update the specified resource in storage.
      *
@@ -90,31 +90,30 @@ class EventController extends Controller
      * 2. Diperbaiki: string pesan sukses yang terpotong antar baris
      */
     public function update(Request $request, Event $event)
-    {
-        $data = $request->validate([
-            'category_id' => 'required|exists:categories,id',
-            'title'       => 'required|string|max:255',
-            'description' => 'required|string',
-            'date'        => 'required|date',
-            'location'    => 'required|string|max:255',
-            'price'       => 'required|numeric',
-            'stock'       => 'required|numeric',
-        ]);
+{
+    $data = $request->validate([
+        'category_id' => 'required|exists:categories,id',
+        'partner_id'  => 'nullable|exists:partners,id',
+        'title'       => 'required|string|max:255',
+        'description' => 'required|string',
+        'date'        => 'required|date',
+        'location'    => 'required|string|max:255',
+        'price'       => 'required|numeric',
+        'stock'       => 'required|numeric',
+    ]);
 
-        if ($request->hasFile('poster')) {
-            // Hapus poster lama jika sudah ada sebelumnya
-            if ($event->poster_path) {
-                Storage::disk('public')->delete($event->poster_path);
-            }
-            // Simpan poster baru ke direktori storage/app/public/posters
-            $data['poster_path'] = $request->file('poster')->store('posters', 'public');
+    if ($request->hasFile('poster')) {
+        if ($event->poster_path) {
+            Storage::disk('public')->delete($event->poster_path);
         }
-
-        $event->update($data);
-
-        return redirect()->route('admin.events.index')
-            ->with('success', 'Rincian data event berhasil diperbarui.');
+        $data['poster_path'] = $request->file('poster')->store('posters', 'public');
     }
+
+    $event->update($data);
+
+    return redirect()->route('admin.events.index')
+        ->with('success', 'Rincian data event berhasil diperbarui.');
+}
 
     /**
      * Remove the specified resource from storage.

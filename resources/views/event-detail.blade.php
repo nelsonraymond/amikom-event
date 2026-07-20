@@ -24,24 +24,7 @@
 
 <body class="bg-slate-50 text-slate-900">
 
-    <!-- Navigation (Simplified) -->
-    <nav
-        class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center bg-white border-b sticky top-8 z-40 rounded-b-2xl shadow-sm">
-        <a href="/" class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
-                AH</div>
-            <span class="text-xl font-bold tracking-tight">AmikomEventHub</span>
-        </a>
-        <div class="flex gap-4">
-            <button class="px-4 py-2 text-slate-600 font-medium">Cari Event</button>
-            <button class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                </svg>
-            </button>
-        </div>
-    </nav>
+   
 
     <main class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 lg:grid-cols-3 gap-12">
         <!-- Left: Poster -->
@@ -51,17 +34,27 @@
                   ? asset('storage/' . $event->poster_path)
                   : 'https://placehold.co/200x600' }}" alt="{{ $event->title }}" class="w-full rounded-[2.5rem] shadow-2xl border-8 border-white object-cover aspect-[3/4]">
                 <div class="mt-8 p-6 bg-white rounded-3xl border border-slate-100 shadow-sm">
-                    <h4 class="font-bold mb-4">Penyelenggara</h4>
-                    <div class="flex items-center gap-4">
-                        <div
-                            class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-bold">
-                            AB</div>
-                        <div>
-                            <p class="font-bold text-slate-800">ABP Productions</p>
-                            <p class="text-xs text-slate-500">Verified Organizer</p>
-                        </div>
-                    </div>
-                </div>
+    <h4 class="font-bold mb-4">Penyelenggara</h4>
+    @if ($event->partner)
+        <a href="{{ route('partner.profile', $event->partner->id) }}" class="flex items-center gap-4 group">
+            <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-bold overflow-hidden">
+                @if ($event->partner->logo_url)
+                    <img src="{{ $event->partner->logo_url }}" class="w-full h-full object-cover">
+                @else
+                    {{ strtoupper(substr($event->partner->name, 0, 2)) }}
+                @endif
+            </div>
+            <div>
+                <p class="font-bold text-slate-800 group-hover:text-indigo-600">{{ $event->partner->name }}</p>
+                <p class="text-xs text-slate-500">
+                    ⭐ {{ $event->partner->average_rating ?: '-' }} · Lihat profil
+                </p>
+            </div>
+        </a>
+    @else
+        <p class="text-slate-400 text-sm">Penyelenggara belum ditentukan.</p>
+    @endif
+</div>
             </div>
         </div>
 
@@ -171,13 +164,39 @@
                 </ul>
             </div>
         </div>
+
+        <div class="space-y-6">
+    <div class="flex items-center justify-between">
+        <h3 class="text-2xl font-bold">Ulasan Peserta</h3>
+        @if ($event->reviews->count())
+            <div class="flex items-center gap-2">
+                <span class="text-2xl font-black text-amber-500">{{ number_format($event->average_rating, 1) }}</span>
+                <span class="text-slate-400 text-sm">({{ $event->reviews->count() }} ulasan)</span>
+            </div>
+        @endif
+    </div>
+
+    @forelse ($event->reviews as $review)
+        <div class="p-6 bg-white rounded-3xl border border-slate-100">
+            <div class="flex items-center justify-between mb-2">
+                <p class="font-bold text-slate-800">{{ $review->user->name }}</p>
+                <div class="flex gap-0.5">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <span class="{{ $i <= $review->rating ? 'text-amber-400' : 'text-slate-200' }}">★</span>
+                    @endfor
+                </div>
+            </div>
+            @if ($review->comment)
+                <p class="text-slate-500 text-sm">{{ $review->comment }}</p>
+            @endif
+        </div>
+    @empty
+        <p class="text-slate-400 text-sm">Belum ada ulasan untuk event ini.</p>
+    @endforelse
+</div>
     </main>
 
-    <footer class="bg-slate-900 text-slate-400 py-12 px-6 mt-20">
-        <div class="max-w-7xl mx-auto text-center">
-            <p>&copy; 2024 AmikomEventHub. Prototype Demo.</p>
-        </div>
-    </footer>
+    
 
 </body>
 

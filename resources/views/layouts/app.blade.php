@@ -18,6 +18,7 @@
             backdrop-filter: blur(10px);
         }
     </style>
+     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 
@@ -39,11 +40,40 @@
             <a href="/profil" class="hover:text-indigo-600 transition">Profil</a>
             <a href="/my-ticket" class="hover:text-indigo-600 transition">Tiketku</a>
         </div>
-        <!-- <div class="flex gap-3">
-            <button class="px-5 py-2.5 rounded-xl font-semibold hover:bg-slate-200 transition">Login</button>
-            <button
-                class="px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition">Daftar</button>
-        </div> -->
+        @guest
+        <div class="flex gap-3">
+            <a href="{{ route('login') }}"
+               class="px-5 py-2.5 rounded-xl font-semibold hover:bg-slate-200 transition">Login</a>
+            <a href="{{ route('login') }}"
+               class="px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition">Daftar</a>
+        </div>
+        @else
+        <div class="relative group">
+            <button class="flex items-center gap-2.5 pl-2 pr-4 py-2 rounded-xl hover:bg-slate-100 transition">
+                @if(auth()->user()->avatar)
+                    <img src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->name }}"
+                         class="w-8 h-8 rounded-full object-cover">
+                @else
+                    <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold">
+                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                    </div>
+                @endif
+                <span class="font-medium text-sm hidden lg:inline">{{ auth()->user()->name }}</span>
+            </button>
+
+            <div class="absolute right-0 mt-1 w-48 bg-white rounded-xl shadow-lg border border-slate-100 py-2
+                        opacity-0 invisible group-hover:opacity-100 group-hover:visible transition z-50">
+                <a href="{{ route('ticket') }}" class="block px-4 py-2 text-sm hover:bg-slate-50">Tiketku</a>
+                <a href="{{ route('profil') }}" class="block px-4 py-2 text-sm hover:bg-slate-50">Profil</a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                        Keluar
+                    </button>
+                </form>
+            </div>
+        </div>
+        @endguest
     </nav>
     
     
@@ -90,7 +120,7 @@
             </div>
         </div>
         <div class="max-w-7xl mx-auto pt-12 mt-12 border-t border-indigo-800 text-center text-indigo-400 text-sm">
-            &copy; 2024 AmikomEventHub. Built with Laravel & Tailwind CSS.
+            &copy; 2026 AmikomEventHub. Built with Laravel & Tailwind CSS.
         </div>
     </footer>
 

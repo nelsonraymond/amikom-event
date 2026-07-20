@@ -6,13 +6,7 @@
 @section('page_subtitle', 'Buat dan atur acara seru Anda di sini.')
 
 @section('content')
-<div class="mb-4 text-right">
-<a href="{{ route('admin.events.create') }}" class="inline-block px-6 py-3
-bg-indigo-600 text-white rounded-2xl font-bold shadow-lg shadow-indigo-100
-hover:bg-indigo-700 active:scale-95 transition">
-+ Tambah Event Baru
-</a>
-</div>
+
 
 <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm
 overflow-hidden">

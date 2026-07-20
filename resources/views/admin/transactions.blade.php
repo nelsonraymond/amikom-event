@@ -58,7 +58,7 @@
                         class="px-5 py-3 rounded-xl border-slate-200 border bg-white outline-none text-sm font-bold">
                         <option>Bulan Ini</option>
                         <option>Bulan Lalu</option>
-                        <option>Tahun 2024</option>
+                        <option>Tahun 2026</option>
                     </select>
                 </div>
             </div>
@@ -86,10 +86,10 @@
                                 <p class="text-xs text-slate-500">donni@example.com</p>
                             </td>
                             <td class="px-8 py-6">
-                                <p class="font-medium text-slate-700">Jazz Night 2024</p>
+                                <p class="font-medium text-slate-700">Jazz Night 2026</p>
                             </td>
                             <td class="px-8 py-6 text-sm text-slate-500">
-                                26 Mar 2024, 17:45
+                                26 Mar 2026, 17:45
                             </td>
                             <td class="px-8 py-6">
                                 <span
@@ -112,7 +112,7 @@
                                 <p class="font-medium">AI & Future Workshop</p>
                             </td>
                             <td class="px-8 py-6 text-sm">
-                                26 Mar 2024, 15:20
+                                26 Mar 2026, 15:20
                             </td>
                             <td class="px-8 py-6">
                                 <span
@@ -132,10 +132,10 @@
                                 <p class="text-xs text-slate-500">budi@example.com</p>
                             </td>
                             <td class="px-8 py-6">
-                                <p class="font-medium text-slate-700">Hackathon 2024</p>
+                                <p class="font-medium text-slate-700">Hackathon 2026</p>
                             </td>
                             <td class="px-8 py-6 text-sm text-slate-500">
-                                25 Mar 2024, 10:00
+                                25 Mar 2026, 10:00
                             </td>
                             <td class="px-8 py-6">
                                 <span

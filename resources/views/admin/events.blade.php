@@ -61,8 +61,8 @@
                                 <img src="assets/concert.png" class="w-16 h-20 rounded-xl object-cover shadow-sm">
                             </td>
                             <td class="px-8 py-6">
-                                <p class="font-black text-slate-800">Jazz Night 2024</p>
-                                <p class="text-xs text-slate-400">Musik • 16 Nov 2024</p>
+                                <p class="font-black text-slate-800">Jazz Night 2026</p>
+                                <p class="text-xs text-slate-400">Musik • 16 Nov 2026</p>
                             </td>
                             <td class="px-8 py-6">
                                 <p class="font-bold text-indigo-600">Rp 150.000</p>
@@ -96,7 +96,7 @@
                             </td>
                             <td class="px-8 py-6">
                                 <p class="font-black text-slate-800">AI & Future Workshop</p>
-                                <p class="text-xs text-slate-400">Tech • 26 Oct 2024</p>
+                                <p class="text-xs text-slate-400">Tech • 26 Oct 2026</p>
                             </td>
                             <td class="px-8 py-6">
                                 <p class="font-bold text-indigo-600">Rp 50.000</p>
