@@ -11,18 +11,28 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->alias([
-            'admin' => \App\Http\Middleware\AdminMiddleware::class,
-             'partner.active' => \App\Http\Middleware\EnsurePartnerIsActive::class,
-        ]);
+    $middleware->alias([
+        'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        'partner.active' => \App\Http\Middleware\EnsurePartnerIsActive::class,
+    ]);
 
-        $middleware->validateCsrfTokens(except: [
-            'midtrans/callback', // Removed the leading slash '/'
-            'midtrans/*',        // Alternatively, use a wildcard to cover everything under midtrans
-        ]);
-    
-        $middleware->redirectGuestsTo('/admin/login');
-    })
+    $middleware->validateCsrfTokens(except: [
+        'midtrans/callback',
+        'midtrans/*',
+    ]);
+
+    $middleware->redirectGuestsTo(function ($request) {
+        if ($request->is('admin') || $request->is('admin/*')) {
+            return route('admin.login');
+        }
+
+        if ($request->is('partner') || $request->is('partner/*')) {
+            return route('partner.login');
+        }
+
+        return route('login');
+    });
+})
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();
