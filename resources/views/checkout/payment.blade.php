@@ -33,26 +33,25 @@
  <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
  <script type="text/javascript">
      document.getElementById('pay-button').onclick = function () {
-         // SnapToken acquired from previous step
-         snap.pay('{{ $transaction->snap_token }}', {
-             // Optional
-             onSuccess: function(result){
-                 window.location.href = "{{ route('checkout.success', $transaction->order_id) }}";
-             },
-              // Optional
-              onPending: function(result){
-                  window.location.href = "{{ route('checkout.success', $transaction->order_id) }}";
-              },
-              // Optional
-              onError: function(result){
-                  alert("Pembayaran Gagal!");
-              },
-              // Optional
-              onClose: function(result){
-                  window.location.href = "{{ route('checkout.payment', $transaction->order_id) }}";
-              }
-         });
-     };
+    snap.pay('{{ $transaction->snap_token }}', {
+        onSuccess: function(result){
+            window.location.href = "{{ route('checkout.success', $transaction->order_id) }}";
+        },
+        onPending: function(result){
+            // VA/metode pending -> TETAP di halaman payment, jangan anggap lunas.
+            // Reload biar customer lihat instruksi bayar dari Snap lagi kalau perlu,
+            // atau cukup kasih pesan tanpa redirect ke success.
+            alert("Silakan selesaikan pembayaran sesuai instruksi. Halaman akan diperbarui begitu pembayaran kami terima.");
+            window.location.reload();
+        },
+        onError: function(result){
+            alert("Pembayaran Gagal!");
+        },
+        onClose: function(result){
+            window.location.href = "{{ route('checkout.payment', $transaction->order_id) }}";
+        }
+    });
+};
 
      // Auto trigger
      window.onload = function() {

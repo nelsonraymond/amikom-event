@@ -43,6 +43,11 @@ return [
         'provider' => 'users',
     ],
 
+    'admin' => [
+        'driver' => 'session',
+        'provider' => 'users',
+    ],
+
     // guard baru buat Kepanitiaan
     'partner' => [
         'driver' => 'session',

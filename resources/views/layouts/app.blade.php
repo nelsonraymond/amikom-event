@@ -34,13 +34,13 @@
             <span class="text-xl font-bold tracking-tight">AmikomEventHub</span>
         </div>
         <div class="hidden md:flex gap-8 font-medium">
-            <a href="/katalog" class="text-indigo-600">Jelajahi</a>
-            <a href="/katalog" class="hover:text-indigo-600 transition">Kategori</a>
-            <a href="/contact" class="hover:text-indigo-600 transition">Tentang Kami</a>
-            <a href="/profil" class="hover:text-indigo-600 transition">Profil</a>
-            <a href="/my-ticket" class="hover:text-indigo-600 transition">Tiketku</a>
-        </div>
-        @guest
+            <a href="/katalog" class="{{ request()->is('katalog') || request()->is('/') ? 'text-indigo-600' : 'hover:text-indigo-600 transition' }}">Jelajahi</a>
+            <a href="/katalog" class="{{ request()->is('katalog') ? 'text-indigo-600' : 'hover:text-indigo-600 transition' }}">Kategori</a>
+            <a href="/contact" class="{{ request()->is('contact') ? 'text-indigo-600' : 'hover:text-indigo-600 transition' }}">Tentang Kami</a>
+            <a href="/profil" class="{{ request()->is('profil') ? 'text-indigo-600' : 'hover:text-indigo-600 transition' }}">Profil</a>
+            <a href="/my-ticket" class="{{ request()->is('my-ticket*') ? 'text-indigo-600' : 'hover:text-indigo-600 transition' }}">Tiketku</a>
+</div>
+        @guest('web')
         <div class="flex gap-3">
             <a href="{{ route('login') }}"
                class="px-5 py-2.5 rounded-xl font-semibold hover:bg-slate-200 transition">Login</a>
@@ -50,15 +50,15 @@
         @else
         <div class="relative group">
             <button class="flex items-center gap-2.5 pl-2 pr-4 py-2 rounded-xl hover:bg-slate-100 transition">
-                @if(auth()->user()->avatar)
-                    <img src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->name }}"
+                @if(auth()->guard('web')->user()->avatar)
+                    <img src="{{ auth()->guard('web')->user()->avatar }}" alt="{{ auth()->guard('web')->user()->name }}"
                          class="w-8 h-8 rounded-full object-cover">
                 @else
                     <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold">
-                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                        {{ strtoupper(substr(auth()->guard('web')->user()->name, 0, 1)) }}
                     </div>
                 @endif
-                <span class="font-medium text-sm hidden lg:inline">{{ auth()->user()->name }}</span>
+                <span class="font-medium text-sm hidden lg:inline">{{ auth()->guard('web')->user()->name }}</span>
             </button>
 
             <div class="absolute right-0 mt-1 w-48 bg-white rounded-xl shadow-lg border border-slate-100 py-2
@@ -114,7 +114,7 @@
                 <h4 class="text-white font-bold mb-6">Hubungi Kami</h4>
                 <ul class="space-y-4">
                     <li><a href="/contact" class="hover:text-white transition">Kontak Kami</a></li>
-                    <li>support@eventtiket.com</li>
+                    <li>support@amikomevent.com</li>
                     <li>+62 812 3456 7890</li>
                 </ul>
             </div>

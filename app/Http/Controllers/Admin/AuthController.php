@@ -8,21 +8,23 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // 1. Fungsi menampilkan halaman view formulir
-    public function showLogin() {
+    public function showLogin()
+    {
         return view('auth.login');
     }
 
-    // 2. Fungsi memproses validasi Submit Log In
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials)) {
+        // Pastikan yang login benar akun dengan role admin,
+        // bukan sembarang user di tabel users
+        if (Auth::guard('admin')->attempt(array_merge($credentials, ['role' => 'admin']))) {
             $request->session()->regenerate();
-            return redirect()->route('admin.dashboard'); // Arahkan ke rute dashboard
+            return redirect()->route('admin.dashboard');
         }
 
         return back()->withErrors([
@@ -30,12 +32,11 @@ class AuthController extends Controller
         ]);
     }
 
-    // 3. Fungsi memroses Log Out (Keluar)
-    public function logout(Request $request) {
-        Auth::logout();
+    public function logout(Request $request)
+    {
+        Auth::guard('admin')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');
     }
 }
-
