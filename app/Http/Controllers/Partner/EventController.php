@@ -5,12 +5,19 @@ namespace App\Http\Controllers\Partner;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Event;
+use App\Services\CloudinaryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
+    protected CloudinaryService $cloudinary;
+
+    public function __construct(CloudinaryService $cloudinary)
+    {
+        $this->cloudinary = $cloudinary;
+    }
+
     public function index()
     {
         $partner = Auth::guard('partner')->user();
@@ -47,7 +54,9 @@ class EventController extends Controller
         $data['partner_id'] = Auth::guard('partner')->id();
 
         if ($request->hasFile('poster')) {
-            $data['poster_path'] = $request->file('poster')->store('posters', 'public');
+            $data['poster_path'] = $this->cloudinary->upload(
+                $request->file('poster')->getRealPath()
+            );
         }
 
         Event::create($data);
@@ -80,9 +89,11 @@ class EventController extends Controller
 
         if ($request->hasFile('poster')) {
             if ($event->poster_path) {
-                Storage::disk('public')->delete($event->poster_path);
+                $this->cloudinary->delete($event->poster_path);
             }
-            $data['poster_path'] = $request->file('poster')->store('posters', 'public');
+            $data['poster_path'] = $this->cloudinary->upload(
+                $request->file('poster')->getRealPath()
+            );
         }
 
         $event->update($data);
@@ -96,7 +107,7 @@ class EventController extends Controller
         $this->authorizeOwnership($event);
 
         if ($event->poster_path) {
-            Storage::disk('public')->delete($event->poster_path);
+            $this->cloudinary->delete($event->poster_path);
         }
 
         $event->delete();
