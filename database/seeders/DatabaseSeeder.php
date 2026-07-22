@@ -13,7 +13,7 @@ public function run(): void
     \App\Models\User::create([
     'name' => 'Admin Amikom',
     'email' => 'admin@amikom.ac.id',
-    'password' => bcrypt('password'),
+    'password' => bcrypt('nelson123'),
     'role' => 'admin',
     ]);
 
