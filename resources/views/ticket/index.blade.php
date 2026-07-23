@@ -24,8 +24,8 @@
                 <a href="{{ $isPaid ? route('ticket.show', $trx->order_id) : route('checkout.payment', $trx->order_id) }}"
                    class="block bg-white rounded-3xl border border-slate-200 p-6 shadow-sm hover:border-indigo-300 hover:shadow-md transition">
                     <div class="flex items-center gap-6">
-                        <img src="{{ $trx->event->poster_path ? asset('storage/'.$trx->event->poster_path) : asset('assets/concert.png') }}"
-                             alt="{{ $trx->event->title }}" class="w-20 h-20 rounded-2xl object-cover flex-shrink-0">
+                        <<img src="{{ $trx->event->poster_path ?: asset('assets/concert.png') }}"
+                        alt="{{ $trx->event->title }}" class="w-20 h-20 rounded-2xl object-cover flex-shrink-0">
 
                         <div class="flex-1 min-w-0">
                             <h3 class="font-extrabold text-lg truncate">{{ $trx->event->title }}</h3>
